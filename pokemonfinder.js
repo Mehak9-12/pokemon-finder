@@ -10,6 +10,48 @@ const pokemonHeight = document.getElementById('pokemonHeight');
 const pokemonWeight = document.getElementById('pokemonWeight');
 const pokemonId = document.getElementById('pokemonId');
 const container = document.getElementById('stats-container');
+const randomBtn = document.getElementById('randomBtn');
+const favoriteBtn = document.getElementById('favoriteBtn');
+const favoritesList = document.getElementById('favoritesList');
+let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+// Function to render favorites
+function renderFavorites() {
+  favoritesList.innerHTML = '';
+  favorites.forEach((name) => {
+    const li = document.createElement('li');
+    li.textContent = name;
+
+    // Click event to show Pokémon details
+    li.addEventListener('click', () => {
+      inputPokemon.value = name; // set input to favorite name
+      fetchPokemon(); // fetch and display details
+    });
+
+    favoritesList.appendChild(li);
+  });
+}
+
+// Call once on page load
+renderFavorites();
+
+// Add favorite button
+favoriteBtn.addEventListener('click', () => {
+  const name = pokemonName.textContent;
+  if (!name) return alert('No Pokémon loaded');
+
+  if (favorites.includes(name)) return; // do nothing if already added
+
+  favorites.push(name);
+  localStorage.setItem('favorites', JSON.stringify(favorites));
+  renderFavorites();
+});
+
+randomBtn.addEventListener('click', () => {
+  const randomId = Math.floor(Math.random() * 1010) + 1;
+  inputPokemon.value = randomId;
+  fetchPokemon();
+});
 async function fetchPokemon() {
   const pokemon = inputPokemon.value;
   try {
@@ -69,4 +111,9 @@ searchBtn.addEventListener('click', () => {
   } else {
     alert('please enter pokemon name');
   }
+});
+window.addEventListener('load', () => {
+  const randomId = Math.floor(Math.random() * 1010) + 1;
+  inputPokemon.value = randomId;
+  fetchPokemon();
 });
