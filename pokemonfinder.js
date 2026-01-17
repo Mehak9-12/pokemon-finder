@@ -28,7 +28,7 @@ function renderFavorites() {
       fetchPokemon(); // fetch and display details
     });
 
-    favoritesList.appendChild(li);
+    favoritesList.appendChild(li); // add list to render
   });
 }
 
